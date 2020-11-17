@@ -9,6 +9,9 @@ https://cdn.discordapp.com/attachments/761729209454166016/778028669586636839/Pro
 Installation: Copy the contents of the above file, right click a programming board or remote controller -> Paste Lua Configuration from Clipboard!
 Guide: https://cdn.discordapp.com/attachments/761729209454166016/778128660682113024/Guide.png
 
+Exported Variables:
+- SafeHUDOff: 1 to activate, 0 to decativate Automatic HUD turn off to avoid lag.
+
 Warning! -  If while having a HUD on, you press TAB or Enter to get the pointer out, and you click ANYWHERE other than the chat window (greyed out areas) it will immediately induce lag. Game-wide bug by NQ.
 
 ## References
