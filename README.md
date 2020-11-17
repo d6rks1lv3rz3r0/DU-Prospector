@@ -14,6 +14,8 @@ Exported Variables:
 
 **Warning! -  If while having a HUD on, you press TAB or Enter to get the pointer out, and you click ANYWHERE other than the chat window (greyed out areas) it will immediately induce lag. Use Alt-1 to toggle the HUD off after you take measurements and before you click the resulting points to safely avoid this. Press Alt-1 to toggle it back on for a new measurement afterwards.**
 
+*Scanners are slightly borked in the game at the moment in terms of  consistency of the values they return. This results in readings much more inaccurate than usual. In an effort to alleviate this, try putting a longer distance between each point scan, and walk around in the same spot a bit to stabilize the scanner.*
+
 Testimonials:
 - Stop the black magick! (Old Timey Miner)
 - Never thought somebody would find a real life application area for high school math! (Raging Angsty Kid)
