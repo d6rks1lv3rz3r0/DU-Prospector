@@ -14,6 +14,11 @@ Exported Variables:
 
 Warning! -  If while having a HUD on, you press TAB or Enter to get the pointer out, and you click ANYWHERE other than the chat window (greyed out areas) it will immediately induce lag. Game-wide bug by NQ.
 
+Testimonials:
+- Stop the black magick! (Old Timey Miner)
+- Never thought somebody would find a real life application area for high school math! (Raging Angsty Kid)
+- You mean I haven't been mining all this time? (Soul-searching Deepthinker)
+
 ## References
 [1] Trilateration and extension to Global Positioning System navigation, Bertrand T. Fang, Journal of Guidance, Control, and Dynamics 1986 9:6, 715-717
 [2] https://en.wikipedia.org/wiki/True-range_multilateration#Three_Cartesian_dimensions,_three_measured_slant_ranges
