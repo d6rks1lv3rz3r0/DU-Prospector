@@ -12,7 +12,7 @@ Guide: https://cdn.discordapp.com/attachments/761729209454166016/778128660682113
 Exported Variables:
 - SafeHUDOff: 1 to activate, 0 to decativate Automatic HUD turn off to avoid lag.
 
-Warning! -  If while having a HUD on, you press TAB or Enter to get the pointer out, and you click ANYWHERE other than the chat window (greyed out areas) it will immediately induce lag. Game-wide bug by NQ.
+**Warning! -  If while having a HUD on, you press TAB or Enter to get the pointer out, and you click ANYWHERE other than the chat window (greyed out areas) it will immediately induce lag. Use Alt-1 to toggle the HUD off after you take measurements and before you click the resulting points to safely avoid this. Press Alt-1 to toggle it back on for a new measurement afterwards.**
 
 Testimonials:
 - Stop the black magick! (Old Timey Miner)
