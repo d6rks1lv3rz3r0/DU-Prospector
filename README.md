@@ -27,4 +27,5 @@ https://cdn.discordapp.com/attachments/761729209454166016/778128660682113024/Gui
 
 ## References
 [1] Trilateration and extension to Global Positioning System navigation, Bertrand T. Fang, Journal of Guidance, Control, and Dynamics 1986 9:6, 715-717
+
 [2] https://en.wikipedia.org/wiki/True-range_multilateration#Three_Cartesian_dimensions,_three_measured_slant_ranges
