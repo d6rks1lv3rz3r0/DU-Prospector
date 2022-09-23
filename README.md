@@ -15,8 +15,6 @@ https://www.youtube.com/watch?v=qjgPgsh_Z0s
 - ColorTheme: hex code for color. Google HTML colors.
 - SafeHUDOff: auto shut off for HUD after 3 points.
 - DrawHelp: show help screen on startup.
-- Offset: arrow drawing distance from Avatar in meters.
-- PointerFrequency: arrow refresh rate. Flicker/render aid.
 
 ## Testimonials:
 - Stop the black magick! (Old Timey Miner)
