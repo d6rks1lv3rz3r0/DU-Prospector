@@ -7,10 +7,9 @@ The ultimate ore scanner triangulation script. Will help you lock onto a node on
 
 ## Installation: 
 Copy the contents of "Prospector.json", right click a programming board or remote controller -> Paste Lua Configuration from Clipboard!
-You need to connect the core to your control unit!
 
 ## Guide: 
-https://cdn.discordapp.com/attachments/761729209454166016/778128660682113024/Guide.png
+https://www.youtube.com/watch?v=qjgPgsh_Z0s
 
 ## Exported Variables:
 - ColorTheme: hex code for color. Google HTML colors.
