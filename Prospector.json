@@ -1,320 +1,248 @@
 {
-   "slots":{
-      "0":{
-         "name":"Core",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "1":{
-         "name":"slot2",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "2":{
-         "name":"slot3",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "3":{
-         "name":"slot4",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "4":{
-         "name":"slot5",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "5":{
-         "name":"slot6",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "6":{
-         "name":"slot7",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "7":{
-         "name":"slot8",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "8":{
-         "name":"slot9",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "9":{
-         "name":"slot10",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "-1":{
-         "name":"unit",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "-2":{
-         "name":"system",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      },
-      "-3":{
-         "name":"library",
-         "type":{
-            "events":[
-               
-            ],
-            "methods":[
-               
-            ]
-         }
-      }
-   },
-   "handlers":[
-      {
-         "code":"-- Initalize\nunit.setTimer(\"Update\");\n\nLinePosition = 50;\nIsScreenShowing = 1;\nsystem.showScreen(1);\nPositionCounter = 1;\nMinimapHTML = \"\";\n\nPoint1HTML = \"\";\nPoint2HTML = \"\";\nPoint3HTML = \"\";\n\nGuessToggle = 0;\nDrawArrowToggle = 1;\n\nColorTheme = \"C81D1D\" --export: HUD Color RGB\nSafeHUDOff = true --export: Automatically hide the HUD after measurement.\n\n--Export Work Around\nDrawHelp = true --export: Help Window Default Visibility\nif DrawHelp then\n    DrawHelpToggle = 1;\nelseif ~DrawHelp then\n    DrawHelpToggle = 1;\nend\n",
-         "filter":{
-            "args":[
-               
-            ],
-            "signature":"start()",
-            "slotKey":"-1"
-         },
-         "key":"0"
-      },
-      {
-         "code":"-- Get Green Line Position\nLinePosition = LinePosition - system.getMouseWheel();\n\nif LinePosition > 100 then\n    LinePosition = 100;\nelseif LinePosition < 0 then\n    LinePosition = 0;\nend\n\n-- Toggle Help\nif DrawHelpToggle == 1 then  \n    HelpHTML = [[\n    <div class=\"infobox3\">\n    <p class=\"text\">]] .. \n    [[<strong style=\"text-decoration: underline\">User Manual</strong> <strong> - (]] .. system.getActionKeyName(\"option6\") .. \")</strong>\" ..\n    \"<br> Open your scanner. Travel to 3 points at least 10 meters apart that roughly form a triangle.\" ..\n    \" At each location, use the mouse wheel to align the green line with the scanner readout.\" .. \n    \" Press  <strong>\" .. system.getActionKeyName(\"option2\") .. \"</strong> to record readings at each point.\" ..\n    \"<br><br> After recording 3 points, <strong>2 possible locations</strong> will be printed on your chat window in LUA tab.\" ..\n    \"Proceed to one of the locations with your scanner open, if the distance is increasing, switch to the other location.\" ..\n    \"<br><br> <strong>MK 3!:</strong> A giant arrow will point the way to the proposed locations, avoid setting destinations all together!\" ..\n    [[<br><br> <strong style=\"text-decoration: underline\">Hotkeys</strong>]] ..\n    [[<br>]] .. \n    \"<strong>\" .. system.getActionKeyName(\"option1\") .. \"</strong> to toggle HUD.\" ..\n    \"<br> <strong>\" .. system.getActionKeyName(\"speedup\") .. \"</strong> to undo last measurement. \" ..\n    \"<strong>\" .. system.getActionKeyName(\"option3\") .. \"</strong> to start over.\" ..\n    \"<br> <strong>\" .. system.getActionKeyName(\"speeddown\") .. \"</strong> to toggle arrow target location. \" ..\n    \"<strong>\" .. system.getActionKeyName(\"option5\") .. \"</strong> to toggle arrow itself.\" ..  \n    \"<br> <strong>\" .. system.getActionKeyName(\"option4\") .. \"</strong> to kill the program in case of lag or overload.\" ..\n    [[<br><br> <strong style=\"text-decoration: underline\">Personalization</strong>]] ..  \n    \"<br> <strong> Right Click </strong> the control unit and select edit LUA parameters.\" ..\n    \"<br><br> <strong>ColorTheme:</strong> hex code for color. Google HTML colors.\" ..\n    \"<br> <strong>SafeHUDOff:</strong> auto shut off for HUD after 3 points.\" ..\n    \"<br> <strong>DrawHelp:</strong> show help screen on startup.\" ..\n    \"<br> <strong>Offset:</strong> arrow drawing distance from Avatar in meters.\" ..\n    \"<br> <strong>PointerFrequency:</strong> arrow refresh rate. Flicker/render aid.\" ..\n    [[\n    </p></div>\n    ]];\nelse\n    HelpHTML = \"\";\nend\n\n\n-- Update HUD\nHTML = [[\n\n<style>\n.box {\n  position: absolute; \n  top: 54.5vh;\n  left: 27.5vw;\n  width: 45vw;\n  height: 28.5vh;\n  //border: 2px solid rgb(200,29,29);\n  //background-color: rgba(200,29,29,.2);\n}\n\n.infobox {\n  position: relative; \n  width: 10vw;\n  height: 10vw;\n  left: 2vw;\n  border: 2px solid #]] .. ColorTheme .. [[;\n  background-color: #]] .. ColorTheme .. [[33;\n}\n\n.infobox2 {\n  position: relative; \n  width: 10vw;\n  height: 10vh;\n  left: 2vw;\n  border: 2px solid #]] .. ColorTheme .. [[;\n  background-color: #]] .. ColorTheme .. [[33;\n}\n\n.infobox3 {\n  position: absolute; \n  width: 22vw;\n  height: 46vh;\n  top: 15vw;\n  right: 2vw;\n  border: 2px solid #]] .. ColorTheme .. [[;\n  background-color: #]] .. ColorTheme .. [[88;\n}\n\n.trapezoid {\n  position: relative; \n  top: -0.75vh;\n  border-bottom: 28.5vh solid #]] .. ColorTheme .. [[99;\n  border-left: 5.25vw solid transparent;\n  border-right: 5.25vw solid transparent;\n  height: 0;\n  width: 44.9vw; \n}\n\n.text {\n  margin: 1vh 1vw 1vh 1vw;\n  font-size: 1.25vh;\n}\n\n.disclaimer {\n  margin: 2vh 2vw 2vh 2vw;\n  font-size: 1.2vh;\n  color:#d3d3d3;\n}  \n\n.dot {\n  position: absolute; \n  height: 10%;\n  width: 10%;\n  background-color: #bbb;\n  border-radius: 50%;\n  display: inline-block;\n}\n\nhr {\n  position: relative; \n  height: 1px;\n  border: 0;\n  border-top: 3px solid rgb(29,200,29);\n  top: ]] .. LinePosition .. [[%;\n  width: ]] .. 44.9 - (100-LinePosition)*10.5/100 .. [[vw;\n  left: -]].. LinePosition*5/100 .. [[vw;\n}\n\n</style>\n\n<div>\n\n<div class=\"infobox\">\n]] .. MinimapHTML .. [[\n</div>\n\n<div class=\"infobox2\">\n<p class=\"text\">]] .. \"<br> P1: \" ..\nPoint1HTML .. \"<br> P2: \" .. \nPoint2HTML .. \"<br> P3: \" .. \nPoint3HTML .. \"<br>\" .. \n[[</p>\n</div>\n\n]] .. HelpHTML .. [[\n\n<div class=\"box\">\n\n<div class=\"trapezoid\">\n\n<hr>\n\n</div>\n\n</div>\n</div>\n\n]];\n\nsystem.setScreen(HTML);",
-         "filter":{
-            "args":[
-               {
-                  "value":"Update"
-               }
-            ],
-            "signature":"tick(timerId)",
-            "slotKey":"-1"
-         },
-         "key":"1"
-      },
-      {
-         "code":"-- Auto HUD Turn OFF\nsystem.print(\"HUD has been turned off to avoid lag due to mouse/HUD interaction bug! Press <strong>\" .. system.getActionKeyName(\"option1\") .. \"</strong> to turn the HUD back on for a new measurement or diagnostics!\");\nsystem.showScreen(0);\nIsScreenShowing = 0;\nunit.stopTimer(\"Safety\");",
-         "filter":{
-            "args":[
-               {
-                  "value":"Safety"
-               }
-            ],
-            "signature":"tick(timerId)",
-            "slotKey":"-1"
-         },
-         "key":"2"
-      },
-      {
-         "code":"-- Refresh Stickers\nfor index=1,20 do\n    Core.deleteSticker(index);\nend\n\n-- Draw Arrows if Desired\nif DrawArrowToggle == 1 then\n    PointArrowstoTarget(CurrentGuess);\nelse\n    \nend\n\n-- Stop Timer When Done\nif PositionCounter ~= 0 then\n    unit.stopTimer(\"Pointers\")\nend",
-         "filter":{
-            "args":[
-               {
-                  "value":"Pointers"
-               }
-            ],
-            "signature":"tick(timerId)",
-            "slotKey":"-1"
-         },
-         "key":"3"
-      },
-      {
-         "code":"-- Helper Functions\nfunction interpolateDistance (BoxPercent)\n    if BoxPercent <= 15 then\n        r = 400 + 100*((15)-BoxPercent)/(15-0);\n    elseif BoxPercent <= 33 then\n        r = 300 + 100*((33)-BoxPercent)/(33-15);\n    elseif BoxPercent <= 53 then\n        r = 200 + 100*((53)-BoxPercent)/(53-33);\n    elseif BoxPercent <= 75 then\n        r = 100 + 100*((75)-BoxPercent)/(75-53);\n    elseif BoxPercent <= 100 then\n        r = 0 + 100*((100)-BoxPercent)/(100-75);\n    end\n    return r\nend\n\nfunction signum(number)\n    return (number > 0 and 1) or (number == 0 and 0) or -1\nend\n\nfunction ProjectToLocalCoordinatesFromWorld(vector)\n    -- Accepts vec3 Input in World Coordinates\n    -- Returns vec3 Output in Local Coordinates\n    -- Core has to be hooked as \"Core\".\n    \n    -- Core Size Offsets\n    local coreOffset = 16;\n    local hp = Core.getElementHitPointsById(Core.getId())\n    if hp > 10000 then\n        coreOffset = 128\n    elseif hp > 1000 then\n        coreOffset = 64 \n    elseif hp > 150 then\n        coreOffset = 32\n    end\n        \n    -- Construct Position in World Coordinates\n    local ConstructPosition = vec3(Core.getConstructWorldPos()); \n\n    -- Core Position in Local Coordinates\n    local CorePosition = vec3(Core.getElementPositionById(1)); \n    local CorePosition = CorePosition-coreOffset; \n\n    -- Target Position in Local Coordinates\n    local Relative = vector - ConstructPosition;\n\n    -- Project to Local Coordinates\n    local LocalX = Relative:dot(vec3(Core.getConstructWorldOrientationRight()));\n    local LocalY = Relative:dot(vec3(Core.getConstructWorldOrientationForward()));\n    local LocalZ = Relative:dot(vec3(Core.getConstructWorldOrientationUp()));\n\n    return vec3(LocalX+CorePosition.x, LocalY+CorePosition.y, LocalZ+CorePosition.z);\nend\n\nfunction PointArrowstoTarget(targetvector)\n    -- Accepts vec3 Input in World Coordinates\n    -- Returns Arrow Handles Output\n    -- Core has to be hooked as \"Core\".\n    \n    -- Target Position in Local Coordinates\n    local Target = ProjectToLocalCoordinatesFromWorld(targetvector);\n    \n    -- Avatar Position in Local Coordinates\n    local MyPosition = ProjectToLocalCoordinatesFromWorld(vec3(system.getPlayerWorldPos(unit.getMasterPlayerId())));\n    \n    -- Target Position Relative to Avatar in Local Coordinates\n    local Delta = Target - MyPosition;\n    local DeltaMagnitude = Delta:len();\n\n    -- Draw Initial Arrows Towards the Target\n    Offset = 2.5 --export: Arrow Distance\n    Pointer = Core.spawnArrowSticker(MyPosition.x + Offset*Delta.x/DeltaMagnitude,\n                            MyPosition.y + Offset*Delta.y/DeltaMagnitude,\n                            MyPosition.z + Offset*Delta.z/DeltaMagnitude,\"up\");\n    Pointer2 = Core.spawnArrowSticker(MyPosition.x + Offset*Delta.x/DeltaMagnitude,\n                            MyPosition.y + Offset*Delta.y/DeltaMagnitude,\n                            MyPosition.z + Offset*Delta.z/DeltaMagnitude,\"north\");\n\n    -- First Intrinsic Rotation\n    local YZShadow = vec3(0,Delta.y,Delta.z);\n    local XAngle = YZShadow:angle_between(vec3(0,0,-1));\n\n    local RotatedZAxisY = math.cos(signum(Delta.y)*XAngle)*0 - math.sin(signum(Delta.y)*XAngle)*1;\n    local RotatedZAxisZ = math.sin(signum(Delta.y)*XAngle)*0 + math.cos(signum(Delta.y)*XAngle)*1; \n\n    local RotatedDeltaZ = RotatedZAxisY*Delta.y + RotatedZAxisZ*Delta.z;\n\n    -- Second Intrinsic Rotation\n    local XZShadow = vec3(Delta.x,0,RotatedDeltaZ);\n    local YAngle = XZShadow:angle_between(vec3(0,0,-1));\n\n    -- Orient Drawn Arrows Towards Target\n    Core.rotateSticker(Pointer,signum(Delta.y)*math.deg(XAngle),-signum(Delta.x)*math.deg(YAngle),0);\n    Core.rotateSticker(Pointer2,signum(Delta.y)*math.deg(XAngle),-signum(Delta.x)*math.deg(YAngle),90);\n\n    return Pointer1, Pointer2\nend\n    ",
-         "filter":{
-            "args":[
-               
-            ],
-            "signature":"start()",
-            "slotKey":"-1"
-         },
-         "key":"4"
-      },
-      {
-         "code":"-- Toggle HUD\nif IsScreenShowing == 0 then\n    system.showScreen(1);\n    IsScreenShowing = 1;\nelseif IsScreenShowing == 1 then\n    system.showScreen(0)\n    IsScreenShowing = 0;\nend",
-         "filter":{
-            "args":[
-               {
-                  "value":"option1"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"5"
-      },
-      {
-         "code":"-- Measure First Point\nif PositionCounter == 1 then\n    Position1 = vec3(system.getPlayerWorldPos(unit.getMasterPlayerId()));\n    PositionCounter = 2;\n    r1 = interpolateDistance(LinePosition);\n    A1 = Position1 - Position1;\n    Point1HTML = tostring(math.floor(A1.x)) .. ',' .. tostring(math.floor(A1.y)) .. ',' .. tostring(math.floor(A1.z)) .. ':' .. tostring(math.floor(r1));\n\n-- Measure Second Point\nelseif PositionCounter == 2 then\n    Position2 = vec3(system.getPlayerWorldPos(unit.getMasterPlayerId()));\n    PositionCounter = 3;\n    r2 = interpolateDistance(LinePosition);\n    A2 = Position2 - Position1;\n    Point2HTML = tostring(math.floor(A2.x)) .. ',' .. tostring(math.floor(A2.y)) .. ',' .. tostring(math.floor(A2.z)) .. ':' .. tostring(math.floor(r2));\n\n-- Measure Third Point\nelseif PositionCounter == 3 then\n    Position3 = vec3(system.getPlayerWorldPos(unit.getMasterPlayerId()));\n    PositionCounter = 0;\n    r3 = interpolateDistance(LinePosition);\n    A3 = Position3 - Position1;\n    Point3HTML = tostring(math.floor(A3.x)) .. ',' .. tostring(math.floor(A3.y)) .. ',' .. tostring(math.floor(A3.z)) .. ':' .. tostring(math.floor(r3));\n\n    -- Projection to Common Frame\n    i = A2:normalize(); \n    j = (A3 - A3:project_on(i)):normalize();\n    k = i:cross(j);\n\n    -- Triangulation\n    X = (r1^2 - r2^2 + (A2:len2()))/(2*A2:len());\n    Y = (r1^2 - r3^2 + (A3:len2()) - 2*(A3:dot(i))*X)/(2*(A3:dot(j)));\n    Z = math.sqrt(r1^2 - X^2 - Y^2); \n\n    -- Projection Back to World Frame\n    Origin = Position1;\n        \n    Guess1 = Origin + i*X + j*Y + k*Z;\n    Guess2 = Origin + i*X + j*Y - k*Z;\n    \n    -- Rounding\n    Guess1.x = math.floor(Guess1.x*100)/100;\n    Guess1.y = math.floor(Guess1.y*100)/100;\n    Guess1.z = math.floor(Guess1.z*100)/100;\n    \n    Guess2.x = math.floor(Guess2.x*100)/100;\n    Guess2.y = math.floor(Guess2.y*100)/100;\n    Guess2.z = math.floor(Guess2.z*100)/100;    \n    \n    -- Report Potential Ore Locations\n    Guess1String = [[::pos{0,0,]] ..\n        tostring(Guess1.x) .. ',' .. \n        tostring(Guess1.y) .. ',' .. \n        tostring(Guess1.z) .. '}';\n\n    Guess2String = [[::pos{0,0,]] ..\n        tostring(Guess2.x) .. ',' .. \n        tostring(Guess2.y) .. ',' .. \n        tostring(Guess2.z) .. '}';\n        \n    -- Visualize Triangulation Points\n    ProjectedA1 = {x = A1:dot(i), y = A1:dot(j)};\n    ProjectedA2 = {x = A2:dot(i), y = A2:dot(j)};\n    ProjectedA3 = {x = A3:dot(i), y = A3:dot(j)};\n    \n    Xmin = math.min(ProjectedA1.x,ProjectedA2.x,ProjectedA3.x);\n    Ymin = math.min(ProjectedA1.y,ProjectedA2.y,ProjectedA3.y);\n    Xmax = math.max(ProjectedA1.x,ProjectedA2.x,ProjectedA3.x);\n    Ymax = math.max(ProjectedA1.y,ProjectedA2.y,ProjectedA3.y);\n    \n    Xscale = Xmax-Xmin;\n    Yscale = Ymax-Ymin;\n    MaxScale = math.max(Xscale,Yscale,X);\n    \n    MinimapHTML = [[<span class=\"dot\" style=\"top:]] .. 90 - 100*0.9*(ProjectedA1.y - Ymin)/MaxScale .. [[%;left:]] .. 100*0.9*(ProjectedA1.x - Xmin)/MaxScale .. [[%\"></span>]] ..\n    [[<span class=\"dot\" style=\"top:]] .. 90 - 100*0.9*(ProjectedA2.y - Ymin)/MaxScale .. [[%;left:]] .. 100*0.9*(ProjectedA2.x - Xmin)/MaxScale .. [[%\"></span>]] ..\n    [[<span class=\"dot\" style=\"top:]] .. 90 - 100*0.9*(ProjectedA3.y - Ymin)/MaxScale .. [[%;left:]] .. 100*0.9*(ProjectedA3.x - Xmin)/MaxScale .. [[%\"></span>]]\n   \n    -- Point an Arrow at the Ore Location\n    system.print(tostring(Guess1));\n    CurrentGuess = Guess1;\n    PointerFrequency = 0 --export: Pointer Refresh Period\n    unit.setTimer(\"Pointers\",PointerFrequency);\n        \n    system.print(Guess1String);\n    system.print(Guess2String);\t\n    \n    -- Turn HUD Off\n    if SafeHUDOff then\n    \tunit.setTimer(\"Safety\", 1.5)   \n    end\n        \nelseif PositionCounter == 0 then\n    \n    -- Reset\n    MinimapHTML = \"\";\n    Position1 = {};\n    Position2 = {};\n    Position3 = {};\n    r1 = {};\n    r2 = {};\n    r3 = {};\n    PositionCounter = 1;\n    Point1HTML = \"\";\n    Point2HTML = \"\";\n    Point3HTML = \"\";\n    Guess1 = {};\n    Guess2 = {};\n    \nend",
-         "filter":{
-            "args":[
-               {
-                  "value":"option2"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"6"
-      },
-      {
-         "code":"-- Safe Exit for Lag\nunit.exit()",
-         "filter":{
-            "args":[
-               {
-                  "value":"option4"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"7"
-      },
-      {
-         "code":"-- Reset\nMinimapHTML = \"\";\nPosition1 = {};\nPosition2 = {};\nPosition3 = {};\nr1 = {};\nr2 = {};\nr3 = {};\nPositionCounter = 1;\nPoint1HTML = \"\";\nPoint2HTML = \"\";\nPoint3HTML = \"\";",
-         "filter":{
-            "args":[
-               {
-                  "value":"option3"
-               }
-            ],
-            "signature":"actionStop(action)",
-            "slotKey":"-2"
-         },
-         "key":"8"
-      },
-      {
-         "code":"-- Toggle Arrow Direction\nif GuessToggle == 0 then\n    CurrentGuess = Guess2;\n    GuessToggle = 1;\nelseif GuessToggle == 1 then\n    CurrentGuess = Guess1;\n    GuessToggle = 0;\nend",
-         "filter":{
-            "args":[
-               {
-                  "value":"speeddown"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"9"
-      },
-      {
-         "code":"-- UNDO\n-- Revert to First Point\nif PositionCounter == 2 then\n    \n    Position1 = {};\n    r1 = {};\n    PositionCounter = 1;\n    Point1HTML = \"\";\n    \n-- Revert to Second Point\nelseif PositionCounter == 3 then\n    \n    Position2 = {};\n    r2 = {};\n    PositionCounter = 2;\n    Point2HTML = \"\";\n    \n-- Revert to Third Point\nelseif PositionCounter == 0 then\n    \n    Position3 = {};\n    r3 = {};\n    PositionCounter = 3;\n    Point3HTML = \"\";\n\n-- Revert to First Point\nelseif PositionCounter == 1 then\n    \n    -- Reset\n    MinimapHTML = \"\";\n    Position1 = {};\n    Position2 = {};\n    Position3 = {};\n    r1 = {};\n    r2 = {};\n    r3 = {};\n    PositionCounter = 1;\n    Point1HTML = \"\";\n    Point2HTML = \"\";\n    Point3HTML = \"\";\n    Guess1 = {};\n    Guess2 = {};\n    \nend",
-         "filter":{
-            "args":[
-               {
-                  "value":"speedup"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"10"
-      },
-      {
-         "code":"-- Toggle Arrow Direction\nif DrawArrowToggle == 1 then\n    DrawArrowToggle = 0;\nelseif DrawArrowToggle == 0 then\n    DrawArrowToggle = 1;\nend\n",
-         "filter":{
-            "args":[
-               {
-                  "value":"option5"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"11"
-      },
-      {
-         "code":"-- Toggle Help\nif DrawHelpToggle == 1 then\n    DrawHelpToggle = 0;\nelseif DrawHelpToggle == 0 then\n    DrawHelpToggle = 1;\nend",
-         "filter":{
-            "args":[
-               {
-                  "value":"option6"
-               }
-            ],
-            "signature":"actionStart(action)",
-            "slotKey":"-2"
-         },
-         "key":"12"
-      }
-   ],
-   "methods":[
-      
-   ],
-   "events":[
-      
-   ]
+    "slots": {
+        "0": {
+            "name": "Core",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "1": {
+            "name": "slot2",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "2": {
+            "name": "slot3",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "3": {
+            "name": "slot4",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "4": {
+            "name": "slot5",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "5": {
+            "name": "slot6",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "6": {
+            "name": "slot7",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "7": {
+            "name": "slot8",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "8": {
+            "name": "slot9",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "9": {
+            "name": "slot10",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-1": {
+            "name": "unit",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-3": {
+            "name": "player",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-2": {
+            "name": "construct",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-4": {
+            "name": "system",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-5": {
+            "name": "library",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        }
+    },
+    "handlers": [
+        {
+            "code": "-- Initalize\nunit.setTimer(\"Update\");\n\nLinePosition = 50;\nIsScreenShowing = 1;\nsystem.showScreen(1);\nPositionCounter = 1;\nMinimapHTML = \"\";\nsystem.clearWaypoint(true)\n\nPoint1HTML = \"\";\nPoint2HTML = \"\";\nPoint3HTML = \"\";\n\nGuessToggle = 0;\n\nColorTheme = \"C81D1D\" --export: HUD Color RGB\nSafeHUDOff = true --export: Automatically hide the HUD after measurement.\n\n--Export Work Around\nDrawHelp = true --export: Help Window Default Visibility\nif DrawHelp then\n    DrawHelpToggle = 1;\nelseif ~DrawHelp then\n    DrawHelpToggle = 1;\nend\n",
+            "filter": {
+                "args": [],
+                "signature": "onStart()",
+                "slotKey": "-1"
+            },
+            "key": "0"
+        },
+        {
+            "code": "-- Get Green Line Position\nLinePosition = LinePosition - system.getMouseWheel();\n\nif LinePosition > 100 then\n    LinePosition = 100;\nelseif LinePosition < 0 then\n    LinePosition = 0;\nend\n\n-- Toggle Help\nif DrawHelpToggle == 1 then  \n    HelpHTML = [[\n    <div class=\"infobox3\">\n    <p class=\"text\">]] .. \n    [[<strong style=\"text-decoration: underline\">User Manual</strong> <strong> - (]] .. system.getActionKeyName(\"option6\") .. \")</strong>\" ..\n    \"<br> Open your scanner. Travel to 3 points at least 10 meters apart that roughly form a triangle.\" ..\n    \" At each location, use the mouse wheel to align the green line with the scanner readout.\" .. \n    \" Press  <strong>\" .. system.getActionKeyName(\"option2\") .. \"</strong> to record readings at each point.\" ..\n    \"<br><br> After recording 3 points, <strong> 1 of 2 possible locations</strong> will be set as your Waypoint.\" ..\n    \"Proceed to the waypoint with your scanner open, if the distance is increasing, switch to the other location by pressing <strong>\" .. system.getActionKeyName(\"speeddown\") .. \"</strong>.\" ..\n    [[<br><br> <strong style=\"text-decoration: underline\">Hotkeys</strong>]] ..\n    [[<br>]] .. \n    \"<strong>\" .. system.getActionKeyName(\"option1\") .. \"</strong> to toggle HUD.\" ..\n    \"<br> <strong>\" .. system.getActionKeyName(\"speedup\") .. \"</strong> to undo last measurement. \" ..\n    \"<strong>\" .. system.getActionKeyName(\"option3\") .. \"</strong> to start over.\" ..\n    \"<br> <strong>\" .. system.getActionKeyName(\"speeddown\") .. \"</strong> to toggle arrow target location. \" .. \n    \"<br> <strong>\" .. system.getActionKeyName(\"option4\") .. \"</strong> to kill the program in case of lag or overload.\" ..\n    [[\n    </p></div>\n    ]];\nelse\n    HelpHTML = \"\";\nend\n\n\n-- Update HUD\nHTML = [[\n\n<style>\n.box {\n  position: absolute; \n  top: 52.2vh;\n  left: 27.25vw;\n  width: 46.5vw;\n  height: 28.5vh;\n  //border: 2px solid rgb(200,29,29);\n  //background-color: rgba(200,29,29,.2);\n}\n\n.infobox {\n  position: relative; \n  width: 10vw;\n  height: 10vw;\n  left: 2vw;\n  border: 2px solid #]] .. ColorTheme .. [[;\n  background-color: #]] .. ColorTheme .. [[33;\n}\n\n.infobox2 {\n  position: relative; \n  width: 10vw;\n  height: 10vh;\n  left: 2vw;\n  border: 2px solid #]] .. ColorTheme .. [[;\n  background-color: #]] .. ColorTheme .. [[33;\n}\n\n.infobox3 {\n  position: fixed; \n  width: 25vw;\n  height: 27.66vh;\n  top: 5vh;\n  left: 13.5vw;\n  border: 2px solid #]] .. ColorTheme .. [[;\n  background-color: #]] .. ColorTheme .. [[88;\n}\n\n.trapezoid {\n  position: relative; \n  top: -0.75vh;\n  border-bottom: 28.5vh solid #]] .. ColorTheme .. [[99;\n  border-left: 5.25vw solid transparent;\n  border-right: 5.25vw solid transparent;\n  height: 0;\n  width: 45.55vw; \n}\n\n.text {\n  margin: 1vh 1vw 1vh 1vw;\n  font-size: 1.25vh;\n}\n\n.disclaimer {\n  margin: 2vh 2vw 2vh 2vw;\n  font-size: 1.2vh;\n  color:#d3d3d3;\n}  \n\n.dot {\n  position: absolute; \n  height: 10%;\n  width: 10%;\n  background-color: #bbb;\n  border-radius: 50%;\n  display: inline-block;\n}\n\nhr {\n  position: relative; \n  height: 1px;\n  border: 0;\n  border-top: 3px solid rgb(29,200,29);\n  top: ]] .. LinePosition .. [[%;\n  width: ]] .. 45.55 - (100-LinePosition)*10.5/100 .. [[vw;\n  left: -]].. LinePosition*5.25/100 .. [[vw;\n}\n\n.hrtext {\n  position: relative; \n  height: 1px;\n  top: ]] .. LinePosition - 5 .. [[%;\n  width: ]] .. 2 .. [[vw;\n  right: ]].. - LinePosition*5/100 - 35.8 .. [[vw;\n  font-size: 1vh;\n  font-style: oblique 50deg;\n}\n\n</style>\n\n<div>\n\n<div class=\"infobox\">\n]] .. MinimapHTML .. [[\n</div>\n\n<div class=\"infobox2\">\n<p class=\"text\">]] .. \"<br> P1: \" ..\nPoint1HTML .. \"<br> P2: \" .. \nPoint2HTML .. \"<br> P3: \" .. \nPoint3HTML .. \"<br>\" .. \n[[</p>\n</div>\n\n]] .. HelpHTML .. [[\n\n<div class=\"box\">\n\n<div class=\"trapezoid\">\n\n<hr>\n\n<div class=\"hrtext\">\n]] .. interpolateDistance(LinePosition) .. [[\n</div>\n\n</div>\n\n</div>\n</div>\n\n]];\n\nsystem.setScreen(HTML);",
+            "filter": {
+                "args": [
+                    {
+                        "value": "Update"
+                    }
+                ],
+                "signature": "onTimer(tag)",
+                "slotKey": "-1"
+            },
+            "key": "1"
+        },
+        {
+            "code": "-- Auto HUD Turn OFF\nsystem.print(\"HUD has been turned off to avoid lag due to mouse/HUD interaction bug! Press <strong>\" .. system.getActionKeyName(\"option1\") .. \"</strong> to turn the HUD back on for a new measurement or diagnostics!\");\nsystem.showScreen(0);\nIsScreenShowing = 0;\nunit.stopTimer(\"Safety\");",
+            "filter": {
+                "args": [
+                    {
+                        "value": "Safety"
+                    }
+                ],
+                "signature": "onTimer(tag)",
+                "slotKey": "-1"
+            },
+            "key": "2"
+        },
+        {
+            "code": "-- Rounds Number to Precision ---\nfunction round(num, numDecimalPlaces)\n  local mult = 10^(numDecimalPlaces or 0)\n  return math.floor(num * mult + 0.5) / mult\nend\n\n-- Helper Functions\nfunction interpolateDistance (BoxPercent)\n    if BoxPercent <= 15 then\n        r = 400 + 100*((15)-BoxPercent)/(15-0);\n    elseif BoxPercent <= 33 then\n        r = 300 + 100*((33)-BoxPercent)/(33-15);\n    elseif BoxPercent <= 53 then\n        r = 200 + 100*((53)-BoxPercent)/(53-33);\n    elseif BoxPercent <= 75 then\n        r = 100 + 100*((75)-BoxPercent)/(75-53);\n    elseif BoxPercent <= 100 then\n        r = 0 + 100*((100)-BoxPercent)/(100-75);\n    end\n    return round(r, 1)\nend\n\nfunction signum(number)\n    return (number > 0 and 1) or (number == 0 and 0) or -1\nend",
+            "filter": {
+                "args": [],
+                "signature": "onStart()",
+                "slotKey": "-1"
+            },
+            "key": "3"
+        },
+        {
+            "code": "-- Toggle HUD\nif IsScreenShowing == 0 then\n    system.showScreen(1);\n    IsScreenShowing = 1;\nelseif IsScreenShowing == 1 then\n    system.showScreen(0)\n    IsScreenShowing = 0;\nend",
+            "filter": {
+                "args": [
+                    {
+                        "value": "option1"
+                    }
+                ],
+                "signature": "onActionStart(action)",
+                "slotKey": "-4"
+            },
+            "key": "4"
+        },
+        {
+            "code": "-- Measure First Point\nif PositionCounter == 1 then\n    Position1 = vec3(player.getWorldPosition());\n    PositionCounter = 2;\n    r1 = interpolateDistance(LinePosition);\n    A1 = Position1 - Position1;\n    Point1HTML = tostring(math.floor(A1.x)) .. ',' .. tostring(math.floor(A1.y)) .. ',' .. tostring(math.floor(A1.z)) .. ':' .. tostring(math.floor(r1));\n\n-- Measure Second Point\nelseif PositionCounter == 2 then\n    Position2 = vec3(player.getWorldPosition());\n    PositionCounter = 3;\n    r2 = interpolateDistance(LinePosition);\n    A2 = Position2 - Position1;\n    Point2HTML = tostring(math.floor(A2.x)) .. ',' .. tostring(math.floor(A2.y)) .. ',' .. tostring(math.floor(A2.z)) .. ':' .. tostring(math.floor(r2));\n\n-- Measure Third Point\nelseif PositionCounter == 3 then\n    Position3 = vec3(player.getWorldPosition());\n    PositionCounter = 0;\n    r3 = interpolateDistance(LinePosition);\n    A3 = Position3 - Position1;\n    Point3HTML = tostring(math.floor(A3.x)) .. ',' .. tostring(math.floor(A3.y)) .. ',' .. tostring(math.floor(A3.z)) .. ':' .. tostring(math.floor(r3));\n\n    -- Projection to Common Frame\n    i = A2:normalize(); \n    j = (A3 - A3:project_on(i)):normalize();\n    k = i:cross(j);\n\n    -- Triangulation\n    X = (r1^2 - r2^2 + (A2:len2()))/(2*A2:len());\n    Y = (r1^2 - r3^2 + (A3:len2()) - 2*(A3:dot(i))*X)/(2*(A3:dot(j)));\n    Z = math.sqrt(r1^2 - X^2 - Y^2); \n\n    -- Projection Back to World Frame\n    Origin = Position1;\n        \n    Guess1 = Origin + i*X + j*Y + k*Z;\n    Guess2 = Origin + i*X + j*Y - k*Z;\n    \n    -- Rounding\n    Guess1.x = math.floor(Guess1.x*100)/100;\n    Guess1.y = math.floor(Guess1.y*100)/100;\n    Guess1.z = math.floor(Guess1.z*100)/100;\n    \n    Guess2.x = math.floor(Guess2.x*100)/100;\n    Guess2.y = math.floor(Guess2.y*100)/100;\n    Guess2.z = math.floor(Guess2.z*100)/100;    \n    \n    -- Report Potential Ore Locations\n    Guess1String = [[::pos{0,0,]] ..\n        tostring(Guess1.x) .. ',' .. \n        tostring(Guess1.y) .. ',' .. \n        tostring(Guess1.z) .. '}';\n\n    Guess2String = [[::pos{0,0,]] ..\n        tostring(Guess2.x) .. ',' .. \n        tostring(Guess2.y) .. ',' .. \n        tostring(Guess2.z) .. '}';\n        \n    -- Visualize Triangulation Points\n    ProjectedA1 = {x = A1:dot(i), y = A1:dot(j)};\n    ProjectedA2 = {x = A2:dot(i), y = A2:dot(j)};\n    ProjectedA3 = {x = A3:dot(i), y = A3:dot(j)};\n    \n    Xmin = math.min(ProjectedA1.x,ProjectedA2.x,ProjectedA3.x);\n    Ymin = math.min(ProjectedA1.y,ProjectedA2.y,ProjectedA3.y);\n    Xmax = math.max(ProjectedA1.x,ProjectedA2.x,ProjectedA3.x);\n    Ymax = math.max(ProjectedA1.y,ProjectedA2.y,ProjectedA3.y);\n    \n    Xscale = Xmax-Xmin;\n    Yscale = Ymax-Ymin;\n    MaxScale = math.max(Xscale,Yscale,X);\n    \n    MinimapHTML = [[<span class=\"dot\" style=\"top:]] .. 90 - 100*0.9*(ProjectedA1.y - Ymin)/MaxScale .. [[%;left:]] .. 100*0.9*(ProjectedA1.x - Xmin)/MaxScale .. [[%\"></span>]] ..\n    [[<span class=\"dot\" style=\"top:]] .. 90 - 100*0.9*(ProjectedA2.y - Ymin)/MaxScale .. [[%;left:]] .. 100*0.9*(ProjectedA2.x - Xmin)/MaxScale .. [[%\"></span>]] ..\n    [[<span class=\"dot\" style=\"top:]] .. 90 - 100*0.9*(ProjectedA3.y - Ymin)/MaxScale .. [[%;left:]] .. 100*0.9*(ProjectedA3.x - Xmin)/MaxScale .. [[%\"></span>]]\n   \n    -- Draw Waypoint at the Ore Location\n    system.setWaypoint(Guess1String, true)\n   \n    -- Turn HUD Off\n    if SafeHUDOff then\n    \tunit.setTimer(\"Safety\", 1.5)   \n    end\n        \nelseif PositionCounter == 0 then\n    \n    -- Reset\n    MinimapHTML = \"\";\n    Position1 = {};\n    Position2 = {};\n    Position3 = {};\n    r1 = {};\n    r2 = {};\n    r3 = {};\n    PositionCounter = 1;\n    Point1HTML = \"\";\n    Point2HTML = \"\";\n    Point3HTML = \"\";\n    Guess1 = {};\n    Guess2 = {};\n    system.clearWaypoint(true)\n    \nend",
+            "filter": {
+                "args": [
+                    {
+                        "value": "option2"
+                    }
+                ],
+                "signature": "onActionStart(action)",
+                "slotKey": "-4"
+            },
+            "key": "5"
+        },
+        {
+            "code": "-- Safe Exit for Lag\nunit.exit()",
+            "filter": {
+                "args": [
+                    {
+                        "value": "option4"
+                    }
+                ],
+                "signature": "onActionStart(action)",
+                "slotKey": "-4"
+            },
+            "key": "6"
+        },
+        {
+            "code": "-- Reset\nMinimapHTML = \"\";\nPosition1 = {};\nPosition2 = {};\nPosition3 = {};\nr1 = {};\nr2 = {};\nr3 = {};\nPositionCounter = 1;\nPoint1HTML = \"\";\nPoint2HTML = \"\";\nPoint3HTML = \"\";\nsystem.clearWaypoint(true)",
+            "filter": {
+                "args": [
+                    {
+                        "value": "option3"
+                    }
+                ],
+                "signature": "onActionStop(action)",
+                "slotKey": "-4"
+            },
+            "key": "7"
+        },
+        {
+            "code": "-- Toggle Arrow Direction\nif GuessToggle == 0 then\n    GuessToggle = 1\n    system.setWaypoint(Guess2String, true)\nelseif GuessToggle == 1 then\n    GuessToggle = 0\n    system.setWaypoint(Guess1String, true)\nend",
+            "filter": {
+                "args": [
+                    {
+                        "value": "speeddown"
+                    }
+                ],
+                "signature": "onActionStart(action)",
+                "slotKey": "-4"
+            },
+            "key": "8"
+        },
+        {
+            "code": "-- UNDO\n-- Revert to First Point\nif PositionCounter == 2 then\n    \n    Position1 = {};\n    r1 = {};\n    PositionCounter = 1;\n    Point1HTML = \"\";\n    \n-- Revert to Second Point\nelseif PositionCounter == 3 then\n    \n    Position2 = {};\n    r2 = {};\n    PositionCounter = 2;\n    Point2HTML = \"\";\n    \n-- Revert to Third Point\nelseif PositionCounter == 0 then\n    \n    Position3 = {};\n    r3 = {};\n    PositionCounter = 3;\n    Point3HTML = \"\";\n\n-- Revert to First Point\nelseif PositionCounter == 1 then\n    \n    -- Reset\n    MinimapHTML = \"\";\n    Position1 = {};\n    Position2 = {};\n    Position3 = {};\n    r1 = {};\n    r2 = {};\n    r3 = {};\n    PositionCounter = 1;\n    Point1HTML = \"\";\n    Point2HTML = \"\";\n    Point3HTML = \"\";\n    Guess1 = {};\n    Guess2 = {};\n    system.clearWaypoint(true)\n    \nend",
+            "filter": {
+                "args": [
+                    {
+                        "value": "speedup"
+                    }
+                ],
+                "signature": "onActionStart(action)",
+                "slotKey": "-4"
+            },
+            "key": "9"
+        },
+        {
+            "code": "-- Toggle Help\nif DrawHelpToggle == 1 then\n    DrawHelpToggle = 0;\nelseif DrawHelpToggle == 0 then\n    DrawHelpToggle = 1;\nend",
+            "filter": {
+                "args": [
+                    {
+                        "value": "option6"
+                    }
+                ],
+                "signature": "onActionStart(action)",
+                "slotKey": "-4"
+            },
+            "key": "10"
+        }
+    ],
+    "methods": [],
+    "events": []
 }
